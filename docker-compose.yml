@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: hassan
+      POSTGRES_PASSWORD: password
+      PGTZ: UTC    # <--- Fuerza a Postgres a arrancar en UTC siempre
+      TZ: UTC
+    volumes:
+      - ./database-data:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
