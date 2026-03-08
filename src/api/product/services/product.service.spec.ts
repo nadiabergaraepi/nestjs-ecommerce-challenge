@@ -185,7 +185,7 @@ describe('ProductService', () => {
   describe('activateProduct: activate Product if its info is fulfilled', () => {
     it('should throw not found product', async () => {
       fakeEntityManager.findOne = jest.fn().mockReturnValueOnce(null);
-      const result = service.activateProduct(1, 1);
+      const result = service.changeActiveStatus(1, 1, true);
 
       expect(fakeEntityManager.findOne).toBeCalled();
       expect(result).rejects.toThrowError(
@@ -195,7 +195,7 @@ describe('ProductService', () => {
 
     it('should throw error if product not fulfilled', async () => {
       fakeEntityManager.findOne = jest.fn().mockReturnValueOnce(new Product());
-      const result = service.activateProduct(1, 1);
+      const result = service.changeActiveStatus(1, 1, true);
 
       expect(fakeEntityManager.findOne).toBeCalled();
       expect(result).rejects.toThrowError(
@@ -224,7 +224,7 @@ describe('ProductService', () => {
             raw: [returnedActiveProduct],
           }),
         });
-      const result = await service.activateProduct(1, 1);
+      const result = await service.changeActiveStatus(1, 1, true);
 
       expect(fakeEntityManager.findOne).toBeCalled();
       expect(fakeEntityManager.createQueryBuilder().update).toBeCalled();
