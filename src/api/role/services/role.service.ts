@@ -35,6 +35,8 @@ export class RoleService {
   }
 
   async findAll() {
-    await this.rolesRepository.find
+    return await this.rolesRepository.find();
   }
+
+  //agregar find por usuario
 }
