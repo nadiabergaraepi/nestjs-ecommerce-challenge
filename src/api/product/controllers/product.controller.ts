@@ -16,6 +16,16 @@ export class ProductController {
     return this.productService.getProduct(product.id);
   }
 
+  @Get('all')
+  async getAll() {
+    return this.productService.findAll();
+  }
+
+  @Get('all/active')
+  async getAllActive() {
+    return this.productService.findAllActive();
+  }
+
   @Roles(RoleIds.Admin, RoleIds.Merchant)
   @Post('create')
   async createProduct(

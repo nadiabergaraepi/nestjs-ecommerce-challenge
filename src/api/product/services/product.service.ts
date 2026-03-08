@@ -33,6 +33,18 @@ export class ProductService {
     return product;
   }
 
+  async findAll() {
+    return await this.repository.find();
+  }
+
+  async findAllActive() {
+    return await this.repository.find({
+      where: {
+        isActive: true,
+      }
+    });
+  }
+
   async createProduct(data: CreateProductDto, merchantId: number) {
     const category = await this.categoryRepository.findOne({
       where: {
