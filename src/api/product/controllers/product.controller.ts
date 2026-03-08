@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { RoleIds } from '../../role/enum/role.enum';
-import { CreateProductDto, ProductDetailsDto } from '../dto/product.dto';
+import { CreateProductDto, GetProductsQueryDto, ProductDetailsDto } from '../dto/product.dto';
 import { ProductService } from '../services/product.service';
 import { Roles } from 'src/api/auth/guards/auth.decorator';
 import { FindOneParams } from 'src/common/helper/findOneParams.dto';
@@ -11,19 +11,15 @@ import { User } from 'src/database/entities/user.entity';
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 
+
+  @Get()
+  async getAll(@Query() query: GetProductsQueryDto) {
+    return this.productService.findAll(query.active);
+  }
+
   @Get(':id')
   async getProduct(@Param() product: FindOneParams) {
     return this.productService.getProduct(product.id);
-  }
-
-  @Get('all')
-  async getAll() {
-    return this.productService.findAll();
-  }
-
-  @Get('all/active')
-  async getAllActive() {
-    return this.productService.findAllActive();
   }
 
   @Roles(RoleIds.Admin, RoleIds.Merchant)

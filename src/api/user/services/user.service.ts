@@ -12,7 +12,7 @@ import { errorMessages } from 'src/errors/custom';
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly repository: Repository<User>,
-  ) {}
+  ) { }
 
   public async createUser(
     body: CreateUserDto,
@@ -40,7 +40,7 @@ export class UserService {
     return user;
   }
 
-  public async comparePassword(password, userPassword): Promise<boolean> {
+  public async comparePassword(password: string, userPassword: string): Promise<boolean> {
     return compare(password, userPassword);
   }
 

@@ -33,15 +33,15 @@ export class ProductService {
     return product;
   }
 
-  async findAll() {
-    return await this.repository.find();
-  }
+  async findAll(active?: boolean) {
+    const whereCondition = {};
 
-  async findAllActive() {
+    if (active !== undefined) {
+      whereCondition['isActive'] = active;
+    }
+
     return await this.repository.find({
-      where: {
-        isActive: true,
-      }
+      where: whereCondition
     });
   }
 

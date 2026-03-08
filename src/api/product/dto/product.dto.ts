@@ -1,10 +1,12 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   ArrayMinSize,
+  IsBoolean,
   IsDefined,
   IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -15,6 +17,17 @@ export class CreateProductDto {
   @IsNumber()
   @IsNotEmpty()
   public categoryId: number;
+}
+
+export class GetProductsQueryDto {
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return undefined;
+  })
+  public active?: boolean;
 }
 
 export class ProductDetailsDto {
