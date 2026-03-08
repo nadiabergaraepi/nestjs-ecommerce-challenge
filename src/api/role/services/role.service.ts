@@ -11,7 +11,7 @@ export class RoleService {
   constructor(
     @InjectRepository(Role) private readonly rolesRepository: Repository<Role>,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   async assignRoleToUser(data: AssignRoleDto) {
     const role = await this.findById(data.roleId);
@@ -32,5 +32,9 @@ export class RoleService {
       throw new NotFoundException(errorMessages.role.notFound);
     }
     return role;
+  }
+
+  async findAll() {
+    await this.rolesRepository.find
   }
 }
