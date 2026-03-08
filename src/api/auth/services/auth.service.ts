@@ -7,10 +7,9 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { RoleIds } from 'src/api/role/enum/role.enum';
 import { RoleService } from 'src/api/role/services/role.service';
-import { CreateUserDto } from 'src/api/user/dto/user.dto';
 import { UserService } from 'src/api/user/services/user.service';
 import { errorMessages } from 'src/errors/custom';
-import { PayloadDto } from '../dto/auth.dto';
+import { LoginUserDTO, PayloadDto, RegisterUserDTO } from '../dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -19,28 +18,32 @@ export class AuthService {
     private readonly roleService: RoleService,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
+  ) { }
 
-  async login(user: CreateUserDto) {
+  async login(user: LoginUserDTO) {
     const { email, password } = user;
     const alreadyExistingUser = await this.userService.findByEmail(email);
+
     if (!alreadyExistingUser)
-      throw new UnauthorizedException(errorMessages.auth.wronCredentials);
+      throw new UnauthorizedException(errorMessages.auth.wrongCredentials);
 
     const isValidPassword = await this.userService.comparePassword(
       password,
       alreadyExistingUser.password,
     );
+
     if (!isValidPassword)
-      throw new UnauthorizedException(errorMessages.auth.wronCredentials);
+      throw new UnauthorizedException(errorMessages.auth.wrongCredentials);
+
     return this.generateToken({
       id: alreadyExistingUser.id,
       email,
     });
   }
 
-  async register(user: CreateUserDto) {
+  async register(user: RegisterUserDTO) {
     const alreadyExistingUser = await this.userService.findByEmail(user.email);
+
     if (alreadyExistingUser)
       throw new ConflictException(errorMessages.auth.userAlreadyExist);
 

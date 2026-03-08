@@ -4,7 +4,7 @@ export interface ErrorBody extends Error {
 
 export const errorMessages = {
   auth: {
-    wronCredentials: {
+    wrongCredentials: {
       message: 'wrong data provided',
       code: '60001',
     },
