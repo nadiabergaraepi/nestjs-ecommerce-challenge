@@ -17,9 +17,6 @@ To get started with this project, follow these steps:
 - Clone this repository to your local machine.
 - navigate to the nestjs-ecommerce directory.
 
-```bash 
-cd ./nestjs-ecommerce
-```
 - start postgres database.
 
 ```bash
@@ -37,11 +34,6 @@ npm install
 ```bash
 npm run migration:run
 ```
-if you want to generate any future migration
-
-```bash
-npm run migration:generate --name=<migrationName>
-```
 
 - run database seeders.
 
@@ -54,14 +46,3 @@ npm run seed:run
 ```bash
 npm run start:dev
 ```
-
-## Testing
-To run the tests, follow these steps:
-1. Install dependencies: `npm install`
-2. Run the tests: `npm run test`
-
-## Contributing
-If you're interested in contributing to this project, please follow these guidelines:
-1. Fork the repository
-2. Make your changes
-3. Submit a pull request
