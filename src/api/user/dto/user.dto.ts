@@ -8,7 +8,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  public password: string;
+  public password: string; //todo: agregar un minlength y maxlength
 }
 
 export class UserDto {

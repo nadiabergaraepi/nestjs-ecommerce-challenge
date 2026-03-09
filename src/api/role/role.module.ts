@@ -5,12 +5,12 @@ import { UserModule } from '../user/user.module';
 import { User } from '../../database/entities/user.entity';
 import { RoleController } from './controllers/role.controller';
 import { RoleService } from './services/role.service';
-import { UserService } from '../user/services/user.service';
+import { UserRegisteredListener } from './listener/userRegistered.listener';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Role, User]), UserModule],
   controllers: [RoleController],
-  providers: [RoleService, UserService],
+  providers: [RoleService, UserRegisteredListener],
   exports: [RoleService],
 })
-export class RoleModule {}
+export class RoleModule { }

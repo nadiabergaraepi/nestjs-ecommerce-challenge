@@ -45,11 +45,13 @@ export class UserService {
   }
 
   public async findById(id: number, relations?: UserRelation): Promise<User> {
+    const loadRelations = relations ? Object.keys(relations) : [];
+
     const user: User = await this.repository.findOne({
       where: {
         id,
       },
-      relations,
+      relations: loadRelations,
     });
     if (!user) {
       throw new NotFoundException(errorMessages.user.notFound);
@@ -59,5 +61,16 @@ export class UserService {
 
   public async save(user: User) {
     return this.repository.save(user);
+  }
+
+  public async findRolesByUserId(userId: number): Promise<Role[]> {
+    const user = await this.repository.findOne({
+      where: { id: userId },
+      relations: ['roles'],
+    });
+
+    if (!user) throw new NotFoundException(errorMessages.user.notFound);
+
+    return user.roles;
   }
 }

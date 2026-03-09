@@ -5,17 +5,17 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { RoleIds } from 'src/api/role/enum/role.enum';
-import { RoleService } from 'src/api/role/services/role.service';
 import { UserService } from 'src/api/user/services/user.service';
 import { errorMessages } from 'src/errors/custom';
 import { LoginUserDTO, PayloadDto, RegisterUserDTO } from '../dto/auth.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserRegisteredEvent } from 'src/events/userRegistered.event';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    private readonly roleService: RoleService,
+    private readonly eventEmitter: EventEmitter2,
     private jwtService: JwtService,
     private configService: ConfigService,
   ) { }
@@ -47,9 +47,13 @@ export class AuthService {
     if (alreadyExistingUser)
       throw new ConflictException(errorMessages.auth.userAlreadyExist);
 
-    const customerRole = await this.roleService.findById(RoleIds.Customer);
+    const newUser = await this.userService.createUser(user);
 
-    await this.userService.createUser(user, customerRole);
+    //emitimos el evento
+    this.eventEmitter.emit(
+      'user.registered',
+      new UserRegisteredEvent(newUser.id, newUser.email)
+    );
 
     return {
       message: 'success',

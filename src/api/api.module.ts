@@ -6,9 +6,10 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { ProductModule } from './product/product.module';
 import { ErrorsFilter } from 'src/errors/errors.filter';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
-  imports: [AuthModule, UserModule, RoleModule, ProductModule],
+  imports: [AuthModule, UserModule, RoleModule, ProductModule, EventEmitterModule.forRoot()],
   providers: [
     {
       provide: APP_INTERCEPTOR,
@@ -17,7 +18,7 @@ import { ErrorsFilter } from 'src/errors/errors.filter';
     {
       provide: APP_FILTER,
       useClass: ErrorsFilter,
-    },
+    }
   ],
 })
-export class ApiModule {}
+export class ApiModule { }
